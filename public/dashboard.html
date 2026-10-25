@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EcoNect AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <a href="/" style="display: flex; align-items: center; gap: var(--space-2); text-decoration: none;">
+                    <div style="font-size: 28px;">♻️</div>
+                    <span class="sidebar-logo-text">EcoNect AI</span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <a href="/dashboard" class="sidebar-menu-item active"><span class="icon">🏠</span> Dashboard</a>
+                <a href="/marketplace" class="sidebar-menu-item"><span class="icon">🛒</span> Marketplace</a>
+                <a href="/listing" class="sidebar-menu-item"><span class="icon">➕</span> Create Listing</a>
+                <a href="/messages" class="sidebar-menu-item"><span class="icon">💬</span> Messages</a>
+                <a href="/analytics" class="sidebar-menu-item"><span class="icon">📊</span> Analytics</a>
+                <a href="/profile" class="sidebar-menu-item"><span class="icon">👤</span> Profile</a>
+            </div>
+
+            <div class="sidebar-stats">
+                <div class="sidebar-stats-title">Your Impact This Month</div>
+                <div class="sidebar-stats-grid">
+                    <div class="sidebar-stat-item">
+                        <div class="sidebar-stat-value" id="statWaste">0</div>
+                        <div class="sidebar-stat-label">Tons Traded</div>
+                    </div>
+                    <div class="sidebar-stat-item">
+                        <div class="sidebar-stat-value" id="statSavings">0</div>
+                        <div class="sidebar-stat-label">₹ Saved</div>
+                    </div>
+                    <div class="sidebar-stat-item">
+                        <div class="sidebar-stat-value" id="statCO2">0t</div>
+                        <div class="sidebar-stat-label">CO₂ Reduced</div>
+                    </div>
+                    <div class="sidebar-stat-item">
+                        <div class="sidebar-stat-value" id="statMatches">0</div>
+                        <div class="sidebar-stat-label">Matches</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-menu"
+                style="margin-top: auto; padding-top: var(--space-4); border-top: 1px solid var(--border-color-light);">
+                <a href="#" class="sidebar-menu-item"><span class="icon">⚙️</span> Settings</a>
+                <a href="#" class="sidebar-menu-item" id="logoutBtn"><span class="icon">🚪</span> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <button class="mobile-menu-toggle" id="mobileMenuBtn"><span></span></button>
+                <div class="header-search"><span class="search-icon">🔍</span><input type="text" class="form-input"
+                        placeholder="Search materials, companies..." id="globalSearch"></div>
+                <div class="header-actions">
+                    <button class="header-icon-btn" id="notificationBtn">🔔<span
+                            class="notification-dot"></span></button>
+                    <div class="header-user" id="userMenu">
+                        <div class="avatar" id="userAvatar">U</div>
+                        <div class="header-user-info">
+                            <div class="header-user-name" id="userName">User</div>
+                            <div class="header-user-role" id="userRole">Factory</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="dashboard-content">
+                <!-- Welcome Banner -->
+                <div class="card mb-6" style="background: var(--bg-gradient); color: white;">
+                    <div class="card-body"
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+                        <div>
+                            <h2 style="color: white; margin-bottom: var(--space-2);">Welcome back, <span
+                                    id="welcomeName">User</span>! 👋</h2>
+                            <p style="opacity: 0.9; margin: 0;">You have <strong id="newMatchCount">0</strong> potential
+                                matches based on your profile.</p>
+                        </div>
+                        <a href="/listing" class="btn btn-lg" style="background: white; color: var(--primary-500);">➕
+                            Create New Listing</a>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="dashboard-grid dashboard-grid-4 mb-6">
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-primary">🏭</div>
+                        <div class="stat-value" id="totalListings">0</div>
+                        <div class="stat-label">Active Listings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-secondary">🎯</div>
+                        <div class="stat-value" id="totalMatches">0</div>
+                        <div class="stat-label">Total Matches</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-success">💰</div>
+                        <div class="stat-value" id="totalSavings">₹0</div>
+                        <div class="stat-label">Est. Savings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon stat-icon-accent">🌍</div>
+                        <div class="stat-value" id="totalCO2">0t</div>
+                        <div class="stat-label">CO₂ Reduced</div>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="dashboard-grid dashboard-grid-main-sidebar">
+                    <div>
+                        <!-- AI Matches Section -->
+                        <div class="dashboard-section">
+                            <div class="dashboard-section-header">
+                                <h3 class="dashboard-section-title">🤖 AI-Powered Matches for You</h3>
+                                <div class="tabs-pills">
+                                    <button class="tab active" data-tab="buyers">Need Your Waste</button>
+                                    <button class="tab" data-tab="sellers">Produce What You Need</button>
+                                </div>
+                            </div>
+
+                            <div class="tab-content active" id="buyersTab">
+                                <div class="match-grid" id="buyerMatches">
+                                    <div class="skeleton" style="height: 200px; border-radius: var(--radius-lg);"></div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="sellersTab">
+                                <div class="match-grid" id="sellerMatches">
+                                    <div class="skeleton" style="height: 200px; border-radius: var(--radius-lg);"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Impact Calculator -->
+                        <div class="impact-card mb-6">
+                            <div class="impact-card-title">📊 Your Environmental & Economic Impact</div>
+                            <div class="impact-stats">
+                                <div class="impact-stat">
+                                    <div class="impact-stat-icon">♻️</div>
+                                    <div class="impact-stat-value" id="impactDiverted">0</div>
+                                    <div class="impact-stat-label">Tons Diverted from Landfill</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-stat-icon">💧</div>
+                                    <div class="impact-stat-value" id="impactWater">0</div>
+                                    <div class="impact-stat-label">Liters Water Saved</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-stat-icon">⚡</div>
+                                    <div class="impact-stat-value" id="impactEnergy">0</div>
+                                    <div class="impact-stat-label">kWh Energy Saved</div>
+                                </div>
+                                <div class="impact-stat">
+                                    <div class="impact-stat-icon">🌳</div>
+                                    <div class="impact-stat-value" id="impactTrees">0</div>
+                                    <div class="impact-stat-label">Trees Equivalent</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <div>
+                        <!-- Quick Actions -->
+                        <div class="quick-actions mb-6">
+                            <div class="quick-actions-title">Quick Actions</div>
+                            <button class="quick-action-btn" onclick="location.href='/listing'">
+                                <div class="icon">➕</div>
+                                <div class="text">
+                                    <div class="title">Add Waste Listing</div>
+                                    <div class="subtitle">List materials for sale</div>
+                                </div>
+                            </button>
+                            <button class="quick-action-btn" onclick="location.href='/marketplace'">
+                                <div class="icon">🔍</div>
+                                <div class="text">
+                                    <div class="title">Browse Materials</div>
+                                    <div class="subtitle">Find what you need</div>
+                                </div>
+                            </button>
+                            <button class="quick-action-btn" onclick="location.href='/onboarding'">
+                                <div class="icon">📝</div>
+                                <div class="text">
+                                    <div class="title">Update Profile</div>
+                                    <div class="subtitle">Add materials info</div>
+                                </div>
+                            </button>
+                            <button class="quick-action-btn" onclick="location.href='/analytics'">
+                                <div class="icon">📈</div>
+                                <div class="text">
+                                    <div class="title">View Analytics</div>
+                                    <div class="subtitle">Track your performance</div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Activity Feed -->
+                        <div class="activity-feed">
+                            <div class="activity-feed-header">Recent Activity</div>
+                            <div class="activity-feed-list" id="activityList">
+                                <div class="activity-item">
+                                    <div class="activity-icon match">🎯</div>
+                                    <div class="activity-content">
+                                        <div class="activity-text"><strong>Profile created</strong> - Welcome to
+                                            EcoNect AI!</div>
+                                        <div class="activity-time">Today</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-header-avatar">🤖</div>
+                <div class="chatbot-header-info">
+                    <div class="chatbot-header-title">EcoNect AI Assistant</div>
+                    <div class="chatbot-header-status">Online</div>
+                </div>
+                <button class="chatbot-close" id="closeChatbot">✕</button>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="chatbot-message">
+                    <div class="chatbot-message-avatar">🤖</div>
+                    <div class="chatbot-message-bubble">Hi! I'm your EcoNect AI assistant. I can help you find matches,
+                        understand the platform, or answer questions. How can I help?</div>
+                </div>
+            </div>
+            <div class="chatbot-suggestions" id="chatSuggestions">
+                <button class="chatbot-suggestion" data-msg="Find matches for my materials">Find matches</button>
+                <button class="chatbot-suggestion" data-msg="How does matching work?">How it works</button>
+                <button class="chatbot-suggestion" data-msg="Help me get started">Get started</button>
+            </div>
+            <div class="chatbot-input"><input type="text" id="chatInput" placeholder="Type a message..."><button
+                    id="sendChatBtn">➤</button></div>
+        </div>
+        <button class="chatbot-toggle" id="chatbotToggle">💬</button>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/matching.js"></script>
+
+    <script>
+        // Check auth
+        if (!requireAuth()) throw new Error('Not authenticated');
+
+        const user = getCurrentUser();
+        let unsubscribeMatches = null;
+
+        // Update UI with user info
+        document.getElementById('userName').textContent = user.companyName || 'User';
+        document.getElementById('welcomeName').textContent = user.companyName?.split(' ')[0] || 'User';
+        document.getElementById('userAvatar').textContent = (user.companyName || 'U')[0].toUpperCase();
+        document.getElementById('userRole').textContent = user.industryType || 'Factory';
+
+        // Render match card HTML
+        function renderMatchCard(match, type) {
+            const icon = MatchingEngine.getCategoryIcon(MatchingEngine.getMaterialCategory(match.material));
+            const scoreClass = match.score >= 80 ? 'high' : match.score >= 60 ? 'medium' : 'low';
+            const labelText = type === 'buyer' ? 'They need' : 'They produce';
+            const qtyLabel = type === 'buyer' ? 'They need' : 'Available';
+            const qtyValue = type === 'buyer' ? match.theyNeed : match.theyProduce;
+
+            return `
+                <div class="match-card">
+                    <div class="match-card-header">
+                        <div class="match-card-company">
+                            <div class="avatar">${match.company?.[0] || '?'}</div>
+                            <div>
+                                <div class="match-card-company-name">${match.company || 'Unknown Company'}</div>
+                                <div class="match-card-company-industry">${match.industry || 'Industry'}</div>
+                            </div>
+                        </div>
+                        <div class="match-score-badge ${scoreClass}">
+                            <div class="match-score-value">${match.score}%</div>
+                            <div class="match-score-label">Match</div>
+                        </div>
+                    </div>
+                    <div class="match-card-body">
+                        <div class="match-card-material">
+                            <div class="match-card-material-icon">${icon}</div>
+                            <div class="match-card-material-info">
+                                <div class="match-card-material-type">${labelText}</div>
+                                <div class="match-card-material-name">${match.material || 'Material'}</div>
+                            </div>
+                        </div>
+                        <div class="match-card-details">
+                            <div class="match-card-detail">
+                                <div class="match-card-detail-label">${qtyLabel}</div>
+                                <div class="match-card-detail-value">${qtyValue || '-'} ${match.unit || 'tons'}/mo</div>
+                            </div>
+                            <div class="match-card-detail">
+                                <div class="match-card-detail-label">Location</div>
+                                <div class="match-card-detail-value">${match.location || 'Unknown'}</div>
+                            </div>
+                        </div>
+                        ${match.factors?.length ? `<div style="margin-top: var(--space-2); font-size: var(--text-xs); color: var(--neutral-700);">✓ ${match.factors.slice(0, 2).join(' • ')}</div>` : ''}
+                    </div>
+                    <div class="match-card-footer">
+                        <button class="btn btn-outline btn-sm">View Details</button>
+                        <button class="btn btn-primary btn-sm" onclick="startConversation('${match.companyId}')">Connect</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render empty state
+        function renderEmptyState(type) {
+            const message = type === 'buyer'
+                ? 'No factories currently need your waste materials.'
+                : 'No factories currently produce materials you need.';
+
+            return `
+                <div style="text-align: center; padding: var(--space-8); background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div style="font-size: 48px; margin-bottom: var(--space-4);">🔍</div>
+                    <h4 style="margin-bottom: var(--space-2); color: var(--neutral-800);">No Matches Yet</h4>
+                    <p style="color: var(--neutral-700); margin-bottom: var(--space-4);">${message}</p>
+                    <p style="font-size: var(--text-sm); color: var(--neutral-600);">Complete your profile to enable matching</p>
+                    <a href="/onboarding" class="btn btn-primary" style="margin-top: var(--space-4);">Complete Profile</a>
+                </div>
+            `;
+        }
+
+        // Load and display matches from Firebase
+        async function loadMatches() {
+            const buyerGrid = document.getElementById('buyerMatches');
+            const sellerGrid = document.getElementById('sellerMatches');
+
+            try {
+                const { buyerMatches, sellerMatches } = await MatchingEngine.findMatchesForUser(user.id);
+
+                // Render buyer matches
+                if (buyerMatches.length > 0) {
+                    buyerGrid.innerHTML = buyerMatches.slice(0, 6).map(m => renderMatchCard(m, 'buyer')).join('');
+                } else {
+                    buyerGrid.innerHTML = renderEmptyState('buyer');
+                }
+
+                // Render seller matches
+                if (sellerMatches.length > 0) {
+                    sellerGrid.innerHTML = sellerMatches.slice(0, 6).map(m => renderMatchCard(m, 'seller')).join('');
+                } else {
+                    sellerGrid.innerHTML = renderEmptyState('seller');
+                }
+
+                // Update stats
+                const totalMatches = buyerMatches.length + sellerMatches.length;
+                document.getElementById('newMatchCount').textContent = totalMatches;
+                document.getElementById('totalMatches').textContent = totalMatches;
+                document.getElementById('statMatches').textContent = totalMatches;
+
+                // Calculate impact based on user's waste data
+                const userProfile = await getFullProfile();
+                const wasteProduced = userProfile?.wasteProduced || [];
+                const totalTons = wasteProduced.reduce((sum, w) => sum + (parseFloat(w.quantity) || 0), 0);
+
+                document.getElementById('totalListings').textContent = wasteProduced.length + (userProfile?.materialsRequired?.length || 0);
+                document.getElementById('statWaste').textContent = totalTons || '0';
+                document.getElementById('impactDiverted').textContent = totalTons || '0';
+
+                // Estimated environmental impact
+                const co2Saved = Math.round(totalTons * 0.3);
+                const waterSaved = Math.round(totalTons * 250);
+                const energySaved = Math.round(totalTons * 180);
+                const treeEquiv = Math.round(co2Saved * 10);
+
+                document.getElementById('totalCO2').textContent = co2Saved ? `${co2Saved}t` : '0t';
+                document.getElementById('statCO2').textContent = co2Saved ? `${co2Saved}t` : '0t';
+                document.getElementById('impactWater').textContent = waterSaved >= 1000 ? `${Math.round(waterSaved / 1000)}K` : waterSaved;
+                document.getElementById('impactEnergy').textContent = energySaved >= 1000 ? `${(energySaved / 1000).toFixed(1)}K` : energySaved;
+                document.getElementById('impactTrees').textContent = treeEquiv;
+
+                const avgSavingsPerTon = 2000;
+                const totalSavings = totalTons * avgSavingsPerTon;
+                const savingsDisplay = totalSavings >= 100000 ? `₹${(totalSavings / 100000).toFixed(1)}L` : `₹${totalSavings.toLocaleString()}`;
+                document.getElementById('totalSavings').textContent = savingsDisplay;
+                document.getElementById('statSavings').textContent = totalSavings >= 100000 ? `${(totalSavings / 100000).toFixed(1)}L` : '0';
+
+            } catch (error) {
+                console.error('Error loading matches:', error);
+                buyerGrid.innerHTML = renderEmptyState('buyer');
+                sellerGrid.innerHTML = renderEmptyState('seller');
+            }
+        }
+
+        // Subscribe to real-time updates
+        function startRealtimeUpdates() {
+            if (MatchingEngine.subscribeToMatches) {
+                unsubscribeMatches = MatchingEngine.subscribeToMatches(user.id, () => loadMatches());
+            }
+        }
+
+        function startConversation(companyId) {
+            sessionStorage.setItem('startConversationWith', companyId);
+            window.location.href = '/messages';
+        }
+
+        // Initialize
+        loadMatches();
+        startRealtimeUpdates();
+
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribeMatches) unsubscribeMatches();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tabs-pills .tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.tabs-pills .tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(this.dataset.tab + 'Tab').classList.add('active');
+            });
+        });
+
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mobileOverlay').classList.toggle('active');
+        });
+        document.getElementById('mobileOverlay').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('mobileOverlay').classList.remove('active');
+        });
+
+        // Chatbot
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+
+        document.getElementById('chatbotToggle').addEventListener('click', () => chatbotWindow.classList.toggle('active'));
+        document.getElementById('closeChatbot').addEventListener('click', () => chatbotWindow.classList.remove('active'));
+
+        document.querySelectorAll('.chatbot-suggestion').forEach(btn => {
+            btn.addEventListener('click', function () {
+                sendChatMessage(this.dataset.msg);
+            });
+        });
+
+        document.getElementById('sendChatBtn').addEventListener('click', () => {
+            if (chatInput.value.trim()) {
+                sendChatMessage(chatInput.value);
+                chatInput.value = '';
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim()) {
+                sendChatMessage(chatInput.value);
+                chatInput.value = '';
+            }
+        });
+
+        async function sendChatMessage(text) {
+            chatMessages.innerHTML += `<div class="chatbot-message user"><div class="chatbot-message-avatar">👤</div><div class="chatbot-message-bubble">${text}</div></div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const { buyerMatches, sellerMatches } = await MatchingEngine.findMatchesForUser(user.id);
+            const totalMatches = buyerMatches.length + sellerMatches.length;
+
+            setTimeout(() => {
+                let reply = '';
+                const lowerText = text.toLowerCase();
+
+                if (lowerText.includes('match') || lowerText.includes('find')) {
+                    if (totalMatches > 0) {
+                        const best = buyerMatches[0] || sellerMatches[0];
+                        reply = `I found ${totalMatches} matches! Your best match is ${best.company} with ${best.score}% compatibility for ${best.material}.`;
+                    } else {
+                        reply = "No matches yet. Complete your profile with waste materials and requirements to enable matching!";
+                    }
+                } else if (lowerText.includes('how') || lowerText.includes('work')) {
+                    reply = 'Our AI analyzes material type, quality specs, location, and quantity to find compatible factories. Higher match scores mean better compatibility!';
+                } else if (lowerText.includes('start') || lowerText.includes('help')) {
+                    reply = 'To get started: 1) Complete your profile with waste materials you produce and materials you need. 2) Browse the marketplace. 3) Connect with matched factories!';
+                } else {
+                    reply = `You have ${totalMatches} potential matches. Would you like help finding materials or understanding the matching system?`;
+                }
+
+                chatMessages.innerHTML += `<div class="chatbot-message"><div class="chatbot-message-avatar">🤖</div><div class="chatbot-message-bubble">${reply}</div></div>`;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 800);
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<span>${message}</span><button class="toast-close" onclick="this.parentElement.remove()">✕</button>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+    </script>
+</body>
+
+</html>
