@@ -640,6 +640,15 @@ if (notificationBtn) {
     });
 }
         
+const chatbotToggle = document.getElementById('chatbotToggle');
+const chatbotContainer = document.querySelector('.chatbot-container');
+
+if (chatbotToggle && chatbotContainer) {
+    chatbotToggle.addEventListener('click', () => {
+        chatbotContainer.classList.toggle('active');
+    });
+}
+
     </script>
 </body>
 
