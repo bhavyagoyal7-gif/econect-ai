@@ -308,7 +308,7 @@
                         </div>
                     </div>
 
-                    <form id="registerForm">
+                    <form id="registerForm" novalidate>
                         <!-- Step 1: Company Information -->
                         <div class="form-step active" data-step="1">
                             <h2 class="step-title">Company Basic Information</h2>
@@ -725,41 +725,65 @@
             }
         }
 
-        function validateStep(step) {
-            const stepEl = document.querySelector(`.form-step[data-step="${step}"]`);
-            const inputs = stepEl.querySelectorAll('input[required], select[required], textarea[required]');
+function validateStep(step) {
+    const stepEl = document.querySelector(
+        `.form-step[data-step="${step}"]`
+    );
 
-            let valid = true;
-            inputs.forEach(input => {
-                if (!input.value.trim()) {
-                    input.classList.add('error');
-                    valid = false;
-                } else {
-                    input.classList.remove('error');
-                }
-            });
+    if (!stepEl) {
+        return false;
+    }
 
-            // Step-specific validation
-            if (step === 3) {
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-                if (password !== confirmPassword) {
-                    showToast('Passwords do not match', 'error');
-                    valid = false;
-                }
-                if (password.length < 8) {
-                    showToast('Password must be at least 8 characters', 'error');
-                    valid = false;
-                }
-            }
+    const inputs = stepEl.querySelectorAll(
+        'input[required], select[required], textarea[required]'
+    );
 
-            if (!valid) {
-                showToast('Please fill in all required fields', 'error');
-            }
+    let valid = true;
 
-            return valid;
+    inputs.forEach(input => {
+        let fieldValid;
+
+        if (input.type === 'checkbox') {
+            fieldValid = input.checked;
+        } else if (input.type === 'file') {
+            fieldValid = input.files && input.files.length > 0;
+        } else {
+            fieldValid = input.value.trim() !== '';
         }
 
+        if (fieldValid && input.type !== 'checkbox' && input.type !== 'file') {
+            fieldValid = input.checkValidity();
+        }
+
+        if (!fieldValid) {
+            input.classList.add('error');
+            valid = false;
+        } else {
+            input.classList.remove('error');
+        }
+    });
+
+    if (step === 3) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            showToast('Passwords do not match', 'error');
+            valid = false;
+        }
+
+        if (password.length < 8) {
+            showToast('Password must be at least 8 characters', 'error');
+            valid = false;
+        }
+    }
+
+    if (!valid) {
+        showToast('Please check all required fields and their formats', 'error');
+    }
+
+    return valid;
+}
         function saveStepData(step) {
             if (step === 1) {
                 formData.companyName = document.getElementById('companyName').value;
