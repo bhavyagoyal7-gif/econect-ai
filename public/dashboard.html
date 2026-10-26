@@ -639,16 +639,23 @@ if (notificationBtn) {
             .addEventListener('click', () => panel.remove());
     });
 }
-        
-const chatbotToggle = document.getElementById('chatbotToggle');
-const chatbotContainer = document.querySelector('.chatbot-container');
 
-if (chatbotToggle && chatbotContainer) {
+const chatbotToggle = document.getElementById('chatbotToggle');
+const chatbotWindow = document.getElementById('chatbotWindow');
+const closeChatbot = document.getElementById('closeChatbot');
+
+if (chatbotToggle && chatbotWindow) {
     chatbotToggle.addEventListener('click', () => {
-        chatbotContainer.classList.toggle('active');
+        chatbotWindow.style.display =
+            chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
     });
 }
 
+if (closeChatbot && chatbotWindow) {
+    closeChatbot.addEventListener('click', () => {
+        chatbotWindow.style.display = 'none';
+    });
+}
     </script>
 </body>
 
