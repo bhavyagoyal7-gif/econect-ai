@@ -639,23 +639,96 @@ if (notificationBtn) {
             .addEventListener('click', () => panel.remove());
     });
 }
-
+// Chatbot open and close
 const chatbotToggle = document.getElementById('chatbotToggle');
 const chatbotWindow = document.getElementById('chatbotWindow');
 const closeChatbot = document.getElementById('closeChatbot');
 
-if (chatbotToggle && chatbotWindow) {
-    chatbotToggle.addEventListener('click', () => {
-        chatbotWindow.style.display =
-            chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
-    });
+chatbotToggle?.addEventListener('click', () => {
+    chatbotWindow.classList.toggle('active');
+});
+
+closeChatbot?.addEventListener('click', () => {
+    chatbotWindow.classList.remove('active');
+});
+        
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const sendChatBtn = document.getElementById('sendChatBtn');
+
+function addChatMessage(text, sender = 'bot') {
+    const message = document.createElement('div');
+    message.className = sender === 'user'
+        ? 'chatbot-message user'
+        : 'chatbot-message';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'chatbot-message-avatar';
+    avatar.textContent = sender === 'user' ? '👤' : '🤖';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'chatbot-message-bubble';
+    bubble.textContent = text;
+
+    message.append(avatar, bubble);
+    chatMessages.appendChild(message);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-if (closeChatbot && chatbotWindow) {
-    closeChatbot.addEventListener('click', () => {
-        chatbotWindow.style.display = 'none';
-    });
+async function sendChatMessage(text) {
+    text = text.trim();
+    if (!text) return;
+
+    addChatMessage(text, 'user');
+    chatInput.value = '';
+
+    const lower = text.toLowerCase();
+    let reply;
+
+    if (lower.includes('how') || lower.includes('work')) {
+        reply = 'EcoNect matches businesses by comparing material type, quantity, location and other compatibility factors.';
+    } else if (lower.includes('start') || lower.includes('help')) {
+        reply = 'To get started, complete your profile, add the waste materials you produce or the materials you need, then explore your matches.';
+    } else if (lower.includes('match') || lower.includes('find')) {
+        try {
+            const result = await MatchingEngine.findMatchesForUser(user.id);
+            const buyers = result.buyerMatches || [];
+            const sellers = result.sellerMatches || [];
+            const total = buyers.length + sellers.length;
+
+            if (total > 0) {
+                const best = buyers[0] || sellers[0];
+                reply = `I found ${total} potential matches. Your top match is ${best.company || 'a business'} with ${best.score ?? 'N/A'}% compatibility for ${best.material || 'your material'}.`;
+            } else {
+                reply = 'No matches are available yet. Complete your profile with your materials produced and required, then try again.';
+            }
+        } catch (error) {
+            console.error('Chatbot match error:', error);
+            reply = 'I could not load your matches right now. Please try again shortly.';
+        }
+    } else {
+        reply = 'I can help you find matches, explain how matching works, or guide you through getting started. What would you like to know?';
+    }
+
+    addChatMessage(reply);
 }
+
+sendChatBtn?.addEventListener('click', () => {
+    sendChatMessage(chatInput.value);
+});
+
+chatInput?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+        sendChatMessage(chatInput.value);
+    }
+});
+
+document.querySelectorAll('.chatbot-suggestion').forEach(button => {
+    button.addEventListener('click', () => {
+        sendChatMessage(button.dataset.msg || button.textContent);
+    });
+});
+
     </script>
 </body>
 
