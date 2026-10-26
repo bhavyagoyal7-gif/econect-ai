@@ -283,6 +283,8 @@
 
         const user = getCurrentUser();
         let unsubscribeMatches = null;
+        let matchDetailsRegistry = {};
+        let nextMatchDetailsId = 0;
 
         // Update UI with user info
         document.getElementById('userName').textContent = user.companyName || 'User';
@@ -297,6 +299,8 @@
             const labelText = type === 'buyer' ? 'They need' : 'They produce';
             const qtyLabel = type === 'buyer' ? 'They need' : 'Available';
             const qtyValue = type === 'buyer' ? match.theyNeed : match.theyProduce;
+            const detailsId = ++nextMatchDetailsId;
+            matchDetailsRegistry[detailsId] = { ...match, matchType: type };
 
             return `
                 <div class="match-card">
@@ -334,7 +338,7 @@
                         ${match.factors?.length ? `<div style="margin-top: var(--space-2); font-size: var(--text-xs); color: var(--neutral-700);">✓ ${match.factors.slice(0, 2).join(' • ')}</div>` : ''}
                     </div>
                     <div class="match-card-footer">
-                        <button class="btn btn-outline btn-sm">View Details</button>
+                        <button class="btn btn-outline btn-sm" onclick="viewMatchDetails(${detailsId})">View Details</button>
                         <button class="btn btn-primary btn-sm" onclick="startConversation('${match.companyId}')">Connect</button>
                     </div>
                 </div>
@@ -431,6 +435,36 @@
             sessionStorage.setItem('startConversationWith', companyId);
             window.location.href = '/messages';
         }
+        
+function viewMatchDetails(detailsId) {
+    const match = matchDetailsRegistry[detailsId];
+
+    if (!match) {
+        showToast('Factory details are unavailable. Please refresh the page.', 'error');
+        return;
+    }
+
+    const quantity = match.matchType === 'buyer'
+        ? match.theyNeed
+        : match.theyProduce;
+
+    const quantityLabel = match.matchType === 'buyer'
+        ? 'Quantity needed'
+        : 'Quantity available';
+
+    const details = [
+        `Company: ${match.company || 'Unknown Company'}`,
+        `Industry: ${match.industry || 'Not provided'}`,
+        `Location: ${match.location || 'Not provided'}`,
+        `Material: ${match.material || 'Not specified'}`,
+        `${quantityLabel}: ${quantity || 'Not specified'} ${match.unit || 'tons'}/month`,
+        `Match score: ${match.score ?? 'N/A'}%`,
+        `Match type: ${match.matchType === 'buyer' ? 'Needs your waste' : 'Produces what you need'}`,
+        `Match factors: ${match.factors?.length ? match.factors.join(', ') : 'Not provided'}`
+    ];
+
+    alert(details.join('\n'));
+}
 
         // Initialize
         loadMatches();
