@@ -575,6 +575,11 @@ function escapeDetails(value) {
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 5000);
         }
+        
+        // Load dashboard data when the page opens
+        loadMatches();
+        startRealtimeUpdates();
+        
     </script>
 </body>
 
